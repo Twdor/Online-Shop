@@ -1,14 +1,14 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation.mem;
 
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.model.Supplier;
+import com.codecool.shop.model.SupplierModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierDaoMem implements SupplierDao {
 
-    private List<Supplier> data = new ArrayList<>();
+    private List<SupplierModel> data = new ArrayList<>();
     private static SupplierDaoMem instance = null;
 
     /* A private Constructor prevents any other class from instantiating.
@@ -24,13 +24,13 @@ public class SupplierDaoMem implements SupplierDao {
     }
 
     @Override
-    public void add(Supplier supplier) {
+    public void add(SupplierModel supplier) {
         supplier.setId(data.size() + 1);
         data.add(supplier);
     }
 
     @Override
-    public Supplier find(int id) {
+    public SupplierModel find(int id) {
         return data.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
 
@@ -40,7 +40,7 @@ public class SupplierDaoMem implements SupplierDao {
     }
 
     @Override
-    public List<Supplier> getAll() {
+    public List<SupplierModel> getAll() {
         return data;
     }
 }

@@ -1,9 +1,9 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation.mem;
 
 
 import com.codecool.shop.dao.ProductSubcategoryDao;
-import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.ProductSubcategory;
+import com.codecool.shop.model.ProductCategoryModel;
+import com.codecool.shop.model.ProductSubcategoryModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class ProductSubcategoryDaoMem implements ProductSubcategoryDao {
 
-    private List<ProductSubcategory> data = new ArrayList<>();
+    private List<ProductSubcategoryModel> data = new ArrayList<>();
     private static ProductSubcategoryDaoMem instance = null;
 
     /* A private Constructor prevents any other class from instantiating.
@@ -27,13 +27,13 @@ public class ProductSubcategoryDaoMem implements ProductSubcategoryDao {
     }
 
     @Override
-    public void add(ProductSubcategory subcategory) {
+    public void add(ProductSubcategoryModel subcategory) {
         subcategory.setId(data.size() + 1);
         data.add(subcategory);
     }
 
     @Override
-    public ProductSubcategory find(int id) {
+    public ProductSubcategoryModel find(int id) {
         return data.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
 
@@ -43,10 +43,10 @@ public class ProductSubcategoryDaoMem implements ProductSubcategoryDao {
     }
 
     @Override
-    public List<ProductSubcategory> getAll() { return data; }
+    public List<ProductSubcategoryModel> getAll() { return data; }
 
     @Override
-    public List<ProductSubcategory> getAllByProductCategory(ProductCategory productCategory) {
+    public List<ProductSubcategoryModel> getAllByProductCategory(ProductCategoryModel productCategory) {
         return data.stream().filter(p -> p.getProductCategory().equals(productCategory)).collect(Collectors.toList());
     }
 }

@@ -1,18 +1,22 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation.mem;
 
 
 import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.model.Product;
-import com.codecool.shop.model.ProductSubcategory;
-import com.codecool.shop.model.Supplier;
+import com.codecool.shop.model.ProductModel;
+import com.codecool.shop.model.ProductSubcategoryModel;
+import com.codecool.shop.model.SupplierModel;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.FileWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProductDaoMem implements ProductDao {
 
-    private List<Product> data = new ArrayList<>();
+    private List<ProductModel> data = new ArrayList<>();
     private static ProductDaoMem instance = null;
 
     /* A private Constructor prevents any other class from instantiating.
@@ -28,13 +32,13 @@ public class ProductDaoMem implements ProductDao {
     }
 
     @Override
-    public void add(Product product) {
+    public void add(ProductModel product) {
         product.setId(data.size() + 1);
         data.add(product);
     }
 
     @Override
-    public Product find(int id) {
+    public ProductModel find(int id) {
         return data.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
 
@@ -44,17 +48,17 @@ public class ProductDaoMem implements ProductDao {
     }
 
     @Override
-    public List<Product> getAll() {
+    public List<ProductModel> getAll() {
         return data;
     }
 
     @Override
-    public List<Product> getBy(Supplier supplier) {
+    public List<ProductModel> getBy(SupplierModel supplier) {
         return data.stream().filter(t -> t.getSupplier().equals(supplier)).collect(Collectors.toList());
     }
 
     @Override
-    public List<Product> getBy(ProductSubcategory productSubcategory) {
+    public List<ProductModel> getBy(ProductSubcategoryModel productSubcategory) {
         return data.stream().filter(t -> t.getProductSubcategory().equals(productSubcategory)).collect(Collectors.toList());
     }
 }
