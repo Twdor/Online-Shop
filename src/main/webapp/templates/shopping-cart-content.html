@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<ul th:fragment="shoppingCartCopy" class="list-group list-group-xl list-group-flush" th:each="cart,iterStat : ${shoppingCart}">
+  <li style="padding: 30px" class="list-group-item">
+    <div class="row align-items-center">
+      <div class="col-4">
+        <!-- Image -->
+        <a href="/">
+          <img class="img-fluid" src="/static/img/product_1.jpg" alt="...">
+        </a>
+      </div>
+      <div class="col-8">
+        <!-- Title -->
+        <p class="font-size-sm font-weight-bold mb-6">
+          <a class="text-body" href="/" th:text="${cart.getProduct().getName()}"></a><br>
+          <span class="text-muted" th:text="${cart.getProduct().getPrice()}"></span><br>
+          <span class="text-muted" th:text="${'QTY: '+cart.getQuantity()}"></span>
+        </p>
+        <!--Footer -->
+        <div class="d-flex align-items-center">
+          <!-- Select -->
+          <!-- Remove -->
+          <a id="cardRemoval" th:attr="data-cart-id=${cart.id}" class="btn btn-light float-end">&maltese; Remove</a>
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>
+
+<h4 th:fragment="emptyCart" style="padding: 14rem 0 0 4rem">Your shopping cart is empty.</h4>
+
+</body>
+</html>

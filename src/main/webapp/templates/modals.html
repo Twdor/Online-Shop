@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Category Modal -->
+<div th:fragment="copy" class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog float-start d-flex">
+        <div style="min-width: 30rem;" class="modal-dialog modal-dialog-scrollable">
+            <div style="height: 84vh; margin-top: 5.7rem" class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="categoryModalLabel">SHOP BY CATEGORY</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div style="background-color: transparent" th:each="category,iterStat : ${categories}">
+                        <a style="padding-top: 20px" id="category" th:data-category-id="${category.getId()}" class="btn btn-light" th:text="${category.getName()}">Category name</a><br>
+                    </div>
+                    <a class="btn btn-light">Top Brands</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+        <div style="min-width: 30rem;" id="subcategoryModal" class="modal-dialog modal-dialog-scrollable" hidden="hidden">
+            <div style="height: 84vh; margin-top: 5.7rem; background-color: #212121" class="modal-content">
+                <div id="subcategoryModalBody" class="modal-body">
+                </div>
+                <div style="border-top-color: black" class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Registration Modal -->
+<div th:fragment="copy" class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signUpModalLabel">Registration</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-signUp" class="row g-3 was-validated">
+                    <div class="input-group">
+                        <span class="style-mode input-group-text">Full name</span>
+                        <input type="text" name="fullName" class="style-mode form-control is-invalid" placeholder="Full name" pattern="(^[A-Za-z]{3,16})([ ]{0,1})([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})" required aria-label="Full name">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div><br>
+                    <div class="input-group">
+                        <span class="style-mode input-group-text">Email address</span>
+                        <input type="email" name="email" class="style-mode form-control is-invalid" placeholder="Email" required aria-label="Email">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div><br>
+                    <div class="input-group">
+                        <span class="style-mode input-group-text">Password</span>
+                        <input type="password" name="password" class="style-mode form-control is-invalid" placeholder="Six or more characters" pattern=".{6,}" title="Six or more characters" required aria-label="Password">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div><br>
+                    <div class="col-12 d-flex">
+                        <button class="btn btn-outline-success" type="submit">Register</button>
+                        <button style="color: red" id="alreadyRegister" class="btn btn-light" hidden="hidden" disabled>Email already register! Please enter other.</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div th:fragment="copy" class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Sign in</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-login" class="row g-3 was-validated">
+                    <div class="input-group">
+                        <span class="style-mode input-group-text">Email address</span>
+                        <input type="email" name="email" class="style-mode form-control is-invalid" placeholder="Email" required aria-label="Email">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div><br>
+                    <div class="input-group">
+                        <span class="style-mode input-group-text">Password</span>
+                        <input type="password" name="password" class="style-mode form-control is-invalid" placeholder="Six or more characters" pattern=".{6,}" title="Six or more characters" required aria-label="Password">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div><br>
+                    <div class="col-12 d-flex">
+                        <button id="signIn" class="btn btn-outline-success" type="submit">Sign in</button>
+                        <button style="color: red" id="invalidCredentials" class="btn btn-light" hidden="hidden" disabled>Invalid Credentials! Please try again.</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span style="padding-right: 8rem">
+                    Don't have an account? <a style="color: deepskyblue;" id="signUp" href="#" data-bs-target="#signUpModal" data-bs-toggle="modal" data-bs-dismiss="modal">Create now</a>
+                </span>
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Shopping Cart Modal -->
+<div th:fragment="copy" class="modal opacity-75" id="shoppingCartModal" tabindex="-1" aria-labelledby="shoppingCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog float-end d-flex">
+        <div style="min-width: 30rem;" class="modal-dialog modal-dialog-scrollable">
+            <div style="height: 84vh; margin-top: 5.7rem" class="modal-content">
+                <div class="modal-header line-height-fixed font-size-lg">
+                    <strong id="shoppingCartQuantity" style="padding-left: 2rem" class="mx-auto">Your Cart (0)</strong>
+                    <a type="button" class="btn btn-light float-end transparent" data-bs-dismiss="modal">&maltese;</a>
+                </div>
+                <div id="shoppingCart" class="modal-body">
+                    <ul th:replace="shopping-cart-content.html :: ${shoppingCart ? 'shoppingCartCopy' : 'emptyCart'}"></ul>
+                </div>
+                <div id="totalPriceContainer" th:hidden="${shoppingCart ? 'false' : 'true'}">
+                    <strong style="float: left; padding-left: 10px" class="text-muted">Subtotal</strong>
+                    <strong id="totalPrice" style="float: right; padding-right: 10px" class="text-muted">$89.00</strong>
+                </div>
+                <div class="d-flex row align-items-center">
+                    <a id="checkoutBtn" style="border-color: lightslategray" class="btn btn-outline-success" href="/" th:hidden="${shoppingCart ? 'false' : 'true'}">Continue to Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
