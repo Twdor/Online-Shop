@@ -1,14 +1,14 @@
 package com.codecool.shop.dao;
 
-import com.codecool.shop.model.Supplier;
+import com.codecool.shop.model.SupplierModel;
 
 import java.util.List;
 
 public interface SupplierDao {
 
-    void add(Supplier supplier);
-    Supplier find(int id);
+    void add(SupplierModel supplier);
+    SupplierModel find(int id);
     void remove(int id);
 
-    List<Supplier> getAll();
+    List<SupplierModel> getAll();
 }
