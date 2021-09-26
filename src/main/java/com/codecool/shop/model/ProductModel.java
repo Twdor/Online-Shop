@@ -3,15 +3,15 @@ package com.codecool.shop.model;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-public class Product extends BaseModel {
+public class ProductModel extends BaseModel {
 
     private BigDecimal defaultPrice;
     private Currency defaultCurrency;
-    private ProductSubcategory productSubcategory;
-    private Supplier supplier;
+    private ProductSubcategoryModel productSubcategory;
+    private SupplierModel supplier;
 
 
-    public Product(String name, BigDecimal defaultPrice, String currencyString, String description, ProductSubcategory productSubcategory, Supplier supplier) {
+    public ProductModel(String name, BigDecimal defaultPrice, String currencyString, String description, ProductSubcategoryModel productSubcategory, SupplierModel supplier) {
         super(name, description);
         this.setPrice(defaultPrice, currencyString);
         this.setSupplier(supplier);
@@ -35,29 +35,26 @@ public class Product extends BaseModel {
     }
 
     public String getPrice() { return this.defaultCurrency.toString() + this.defaultPrice; }
-//    public String getPrice() {
-//        return String.valueOf(this.defaultPrice) + " " + this.defaultCurrency.toString();
-//    }
 
     public void setPrice(BigDecimal price, String currency) {
         this.defaultPrice = price;
         this.defaultCurrency = Currency.getInstance(currency);
     }
 
-    public ProductSubcategory getProductSubcategory() {
+    public ProductSubcategoryModel getProductSubcategory() {
         return productSubcategory;
     }
 
-    public void setProductSubcategory(ProductSubcategory productSubcategory) {
+    public void setProductSubcategory(ProductSubcategoryModel productSubcategory) {
         this.productSubcategory = productSubcategory;
         this.productSubcategory.addProduct(this);
     }
 
-    public Supplier getSupplier() {
+    public SupplierModel getSupplier() {
         return supplier;
     }
 
-    public void setSupplier(Supplier supplier) {
+    public void setSupplier(SupplierModel supplier) {
         this.supplier = supplier;
         this.supplier.addProduct(this);
     }
