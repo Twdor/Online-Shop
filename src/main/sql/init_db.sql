@@ -30,12 +30,12 @@ CREATE TABLE public.products (
     product_supplier_id integer NOT NULL
 );
 
-DROP TABLE IF EXISTS public.customers;
-CREATE TABLE public.customers (
+DROP TABLE IF EXISTS public.users;
+CREATE TABLE public.users (
     id serial NOT NULL PRIMARY KEY,
     name text NOT NULL,
     email text NOT NULL,
-    password text NOT NULL,
+    password CHARACTER VARYING(255) NOT NULL,
     phone_number text,
     country text,
     city text,
@@ -55,7 +55,7 @@ CREATE TABLE public.orders (
 DROP TABLE IF EXISTS public.shopping_cards;
 CREATE TABLE public.shopping_cards (
     id serial NOT NULL PRIMARY KEY,
-    customer_id integer NOT NULL,
+    customer_id CHARACTER VARYING(255) NOT NULL,
     product_id integer NOT NULL,
     quantity integer NOT NULL
 );
