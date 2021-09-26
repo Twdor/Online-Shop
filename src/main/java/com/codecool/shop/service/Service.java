@@ -1,107 +1,93 @@
 package com.codecool.shop.service;
 
-import com.codecool.shop.config.ApplicationProperties;
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.ProductSubcategoryDao;
-import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.jdbc.ProductCategoryDaoJdbc;
-import com.codecool.shop.dao.implementation.jdbc.ProductDaoJdbc;
-import com.codecool.shop.dao.implementation.jdbc.ProductSubcategoryDaoJdbc;
-import com.codecool.shop.dao.implementation.jdbc.SupplierDaoJdbc;
-import com.codecool.shop.dao.implementation.mem.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.mem.ProductDaoMem;
-import com.codecool.shop.dao.implementation.mem.ProductSubcategoryDaoMem;
-import com.codecool.shop.dao.implementation.mem.SupplierDaoMem;
-import com.codecool.shop.model.Product;
-import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.ProductSubcategory;
-import com.codecool.shop.model.Supplier;
-import org.postgresql.ds.PGSimpleDataSource;
+import com.codecool.shop.dao.*;
+import com.codecool.shop.dao.implementation.jdbc.*;
+import com.codecool.shop.dao.implementation.mem.*;
+import com.codecool.shop.model.*;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ProductService{
-    private ProductDao productDao;
-    private ProductSubcategoryDao productSubcategoryDao;
+public class Service {
     private ProductCategoryDao productCategoryDao;
     private SupplierDao supplierDao;
+    private ProductDao productDao;
+    private ProductSubcategoryDao productSubcategoryDao;
+    private UserDao userDao;
+    private ShoppingCartDao shoppingCartDao;
 
     //return if db initializer already occurred
     private boolean isInitializer = false;
 
 
-    public ProductService() {
+    public Service() {
         this.productCategoryDao = ProductCategoryDaoMem.getInstance();
         this.productSubcategoryDao = ProductSubcategoryDaoMem.getInstance();
         this.supplierDao = SupplierDaoMem.getInstance();
         this.productDao = ProductDaoMem.getInstance();
+        this.userDao = UserDaoMem.getInstance();
+        this.shoppingCartDao = ShoppingCartDaoMem.getInstance();
     }
 
-    public ProductService(boolean Jdbc) throws SQLException {
-        DataSource dataSource = connect();
-
-        this.productCategoryDao = new ProductCategoryDaoJdbc(dataSource);
-        this.productSubcategoryDao = new ProductSubcategoryDaoJdbc(dataSource);
-        this.supplierDao = new SupplierDaoJdbc(dataSource);
-        this.productDao = new ProductDaoJdbc(dataSource);
+    public Service(boolean Jdbc) throws SQLException {
+        this.productCategoryDao = ProductCategoryDaoJdbc.getInstance();
+        this.productSubcategoryDao = ProductSubcategoryDaoJdbc.getInstance();
+        this.supplierDao = SupplierDaoJdbc.getInstance();
+        this.productDao = ProductDaoJdbc.getInstance();
+        this.userDao = UserDaoJdbc.getInstance();
+        this.shoppingCartDao = ShoppingCartDaoJdbc.getInstance();
         this.isInitializer = getProductCategoryById(1) != null;
     }
 
     //return if db initializer already occurred
     public boolean isInitializer() { return isInitializer; }
 
-    public void add(ProductCategory productCategory) { this.productCategoryDao.add(productCategory); }
+    public void add(ProductCategoryModel productCategoryModel) { this.productCategoryDao.add(productCategoryModel); }
 
-    public void add(ProductSubcategory productSubcategory) { this.productSubcategoryDao.add(productSubcategory); }
+    public void add(ProductSubcategoryModel productSubcategoryModel) { this.productSubcategoryDao.add(productSubcategoryModel); }
 
-    public void add(Supplier supplier) { this.supplierDao.add(supplier); }
+    public void add(SupplierModel supplierModel) { this.supplierDao.add(supplierModel); }
 
-    public  void add(Product product) { this.productDao.add(product); }
+    public  void add(ProductModel product) { this.productDao.add(product); }
 
-    public ProductCategory getProductCategoryById(int id) {
+    public  void add(UserModel customer) { this.userDao.add(customer); }
+
+    public void add(ShoppingCartModel shoppingCartModel) { this.shoppingCartDao.add(shoppingCartModel); }
+
+    public UserModel getUser(String email) { return userDao.find(email); }
+
+    public UserModel getUser(Integer userId) { return userDao.find(userId); }
+
+    public List<UserModel> getAllUsers() { return userDao.getAll(); }
+
+    public ShoppingCartModel getShoppingCartBy(String customerId, int productId) { return shoppingCartDao.find(customerId, productId); }
+
+    public List<ShoppingCartModel> getCustomerShoppingCart(String customerId) { return shoppingCartDao.getAll(customerId); }
+
+    public void deleteShoppingCart(int id) { shoppingCartDao.remove(id); }
+
+    public void updateShoppingCart(ShoppingCartModel shoppingCartModel) { shoppingCartDao.update(shoppingCartModel); }
+
+    public ProductCategoryModel getProductCategoryById(int id) {
         return productCategoryDao.find(id);
     }
 
-    public List<ProductCategory> getAllCategories() { return productCategoryDao.getAll(); }
+    public List<ProductCategoryModel> getAllCategories() { return productCategoryDao.getAll(); }
 
-    public ProductSubcategory getProductSubcategory(int subcategoryId){
+    public ProductSubcategoryModel getProductSubcategory(int subcategoryId){
         return productSubcategoryDao.find(subcategoryId);
     }
 
-    public List<Product> getAllProducts() { return productDao.getAll(); }
+    public List<ProductModel> getAllProducts() { return productDao.getAll(); }
 
-    public List<Product> getProductsForSubcategory(int subcategoryId){
+    public ProductModel getProduct(int productId) { return productDao.find(productId); }
+
+    public List<ProductModel> getProductsForSubcategory(int subcategoryId){
         var subcategory = productSubcategoryDao.find(subcategoryId);
         return productDao.getBy(subcategory);
     }
 
-    public List<ProductSubcategory> getProductSubcategoryByCategoryId(ProductCategory categoryId) {
+    public List<ProductSubcategoryModel> getProductSubcategoryByCategoryId(ProductCategoryModel categoryId) {
         return productSubcategoryDao.getAllByProductCategory(categoryId);
     }
-
-
-    private DataSource connect() throws SQLException {
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-
-        ApplicationProperties properties = new ApplicationProperties();
-
-        String dbName = properties.readProperty("DATABASE");
-        String user = properties.readProperty("USERNAME");
-        String password = properties.readProperty("PASSWORD");
-
-        dataSource.setDatabaseName(dbName);
-        dataSource.setUser(user);
-        dataSource.setPassword(password);
-
-        System.out.println("Trying to connect");
-        dataSource.getConnection().close();
-        System.out.println("Connection ok.");
-
-        return dataSource;
-    }
-
-
 }
