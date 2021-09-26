@@ -53,7 +53,7 @@ public class SupplierDaoJdbc extends DbManager implements SupplierDao {
             supplier.setId(id);
 
             return supplier;
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Error while reading supplier with id: " + id, e);
         }
     }
@@ -75,7 +75,7 @@ public class SupplierDaoJdbc extends DbManager implements SupplierDao {
                 suppliers.add(supplier);
             }
             return suppliers;
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Error while reading all suppliers", e);
         }
     }
