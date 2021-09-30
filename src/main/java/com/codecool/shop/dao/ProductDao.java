@@ -1,8 +1,8 @@
 package com.codecool.shop.dao;
 
-import com.codecool.shop.model.ProductModel;
-import com.codecool.shop.model.SupplierModel;
-import com.codecool.shop.model.ProductSubcategoryModel;
+import com.codecool.shop.models.ProductModel;
+import com.codecool.shop.models.SupplierModel;
+import com.codecool.shop.models.ProductSubcategoryModel;
 
 import java.util.List;
 

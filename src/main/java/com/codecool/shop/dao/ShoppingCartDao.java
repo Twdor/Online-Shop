@@ -1,6 +1,6 @@
 package com.codecool.shop.dao;
 
-import com.codecool.shop.model.ShoppingCartModel;
+import com.codecool.shop.models.ShoppingCartModel;
 
 import java.util.List;
 
@@ -10,7 +10,5 @@ public interface ShoppingCartDao {
     void update(ShoppingCartModel shoppingCartModel);
 
     ShoppingCartModel find(String customerId, int productId);
-//    ShoppingCartModel find(Integer customerId, int productId);
-//    List<ShoppingCartModel> getAll(Integer userId);
-    List<ShoppingCartModel> getAll(String guestId);
+    List<ShoppingCartModel> getAll(String customerId);
 }
