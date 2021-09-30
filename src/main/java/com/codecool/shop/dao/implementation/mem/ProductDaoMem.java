@@ -2,14 +2,10 @@ package com.codecool.shop.dao.implementation.mem;
 
 
 import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.model.ProductModel;
-import com.codecool.shop.model.ProductSubcategoryModel;
-import com.codecool.shop.model.SupplierModel;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.codecool.shop.models.ProductModel;
+import com.codecool.shop.models.ProductSubcategoryModel;
+import com.codecool.shop.models.SupplierModel;
 
-import java.io.FileWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

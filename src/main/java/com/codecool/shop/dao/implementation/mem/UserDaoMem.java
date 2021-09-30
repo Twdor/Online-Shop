@@ -1,7 +1,8 @@
 package com.codecool.shop.dao.implementation.mem;
 
 import com.codecool.shop.dao.UserDao;
-import com.codecool.shop.model.UserModel;
+import com.codecool.shop.models.UserModel;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +26,18 @@ public class UserDaoMem extends MemManager implements UserDao {
     }
 
     private static void setData() {
-        data = getCustomers() == null ? new ArrayList<>() : getCustomers();
+        var dataFromJson = getDataFromJson(new TypeToken<List<UserModel>>() {},"customers.json");
+        data = dataFromJson == null ? new ArrayList<>() : dataFromJson;
     }
 
     @Override
     public void add(UserModel customer) {
-        setData();
         customer.setId(data.size() + 1);
         data.add(customer);
         try {
-            saveJson(data, "customers.json");
+            saveDataToJson(data, "customers.json");
         } catch (Exception e){
-//            throw new RuntimeException("Error while writing to json file: " + String.format("customer-%s.json", customer.getId()), e);
+            throw new RuntimeException("Error while writing to json file: " + "customers.json", e);
         }
     }
 
@@ -46,8 +47,21 @@ public class UserDaoMem extends MemManager implements UserDao {
     }
 
     @Override
-    public void update(UserModel customer) {
-
+    public void update(UserModel user) {
+        var userData = data.get(data.indexOf(find(user.getId())));
+        userData.setName(user.getName());
+        userData.setEmail(user.getEmail());
+        userData.setPhoneNumber(user.getPhoneNumber());
+        userData.setCountry(user.getCountry());
+        userData.setState(user.getState());
+        userData.setCity(user.getCity());
+        userData.setAddress(user.getAddress());
+        userData.setZipcode(user.getZipcode());
+        try {
+            saveDataToJson(data, "customers.json");
+        } catch (Exception e){
+            throw new RuntimeException("Error while writing to json file: " + "shoppingCarts.json", e);
+        }
     }
 
     @Override
@@ -61,9 +75,5 @@ public class UserDaoMem extends MemManager implements UserDao {
     }
 
     @Override
-    public List<UserModel> getAll() {
-        setData();
-//        List<CustomerModel> customerModels = data.stream().map((Function<BaseModel, Object>) BaseModel::toString).collect(Collectors.toList());
-        return data;
-    }
+    public List<UserModel> getAll() { return data; }
 }

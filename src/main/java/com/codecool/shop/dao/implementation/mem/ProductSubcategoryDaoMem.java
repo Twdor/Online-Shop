@@ -2,8 +2,8 @@ package com.codecool.shop.dao.implementation.mem;
 
 
 import com.codecool.shop.dao.ProductSubcategoryDao;
-import com.codecool.shop.model.ProductCategoryModel;
-import com.codecool.shop.model.ProductSubcategoryModel;
+import com.codecool.shop.models.ProductCategoryModel;
+import com.codecool.shop.models.ProductSubcategoryModel;
 
 import java.util.ArrayList;
 import java.util.List;

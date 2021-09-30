@@ -1,6 +1,5 @@
 package com.codecool.shop.dao.implementation.mem;
 
-import com.codecool.shop.model.UserModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -16,29 +15,21 @@ import java.util.List;
 
 public class MemManager {
 
-    protected void saveJson(List<UserModel> model, String jasonFile) throws IOException {
+    protected <T> void saveDataToJson(List<T> models, String jasonFile) throws IOException {
         Writer writer = new FileWriter(jasonFile);
         Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        gson.toJson(model, writer);
+        gson.toJson(models, writer);
         writer.flush();
         writer.close();
     }
 
-    protected void saveJson(UserModel model, String jasonFile) throws IOException {
-        Writer writer = new FileWriter(jasonFile);
-        Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        gson.toJson(model, writer);
-        writer.flush();
-        writer.close();
-    }
-
-    protected static List<UserModel> getCustomers() {
-        List<UserModel> customers = new ArrayList<>();
+    protected static <T> List<T> getDataFromJson(TypeToken<List<T>> targets, String jsonFile) {
+        List<T> data = new ArrayList<>();
         try {
-            Reader reader = Files.newBufferedReader(Paths.get("customers.json"));
-            customers = new Gson().fromJson(reader, new TypeToken<List<UserModel>>() {}.getType());
+            Reader reader = Files.newBufferedReader(Paths.get(jsonFile));
+            data = new Gson().fromJson(reader, targets.getType());
             reader.close();
         } catch (Exception ignored) {}
-        return customers;
+        return data;
     }
 }
