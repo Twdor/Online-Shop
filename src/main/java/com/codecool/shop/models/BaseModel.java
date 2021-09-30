@@ -1,4 +1,4 @@
-package com.codecool.shop.model;
+package com.codecool.shop.models;
 
 
 import java.lang.reflect.Field;
