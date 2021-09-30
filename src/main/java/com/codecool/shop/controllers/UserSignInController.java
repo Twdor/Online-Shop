@@ -1,6 +1,6 @@
 package com.codecool.shop.controllers;
 
-import com.codecool.shop.model.UserModel;
+import com.codecool.shop.models.UserModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 
-@WebServlet(name = "customerSignInServlet", urlPatterns = {"/api/customer-signIn"})
+@WebServlet(name = "userSignInServlet", urlPatterns = {"/api/user-signIn"})
 public class UserSignInController extends MainController {
 
     public UserSignInController() throws SQLException {}

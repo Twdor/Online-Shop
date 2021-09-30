@@ -1,6 +1,6 @@
 package com.codecool.shop.controllers;
 
-import com.codecool.shop.model.ShoppingCartModel;
+import com.codecool.shop.models.ShoppingCartModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -24,7 +24,6 @@ public class ShoppingCartController extends MainController {
         PrintWriter out = response.getWriter();
         var status = new JsonObject();
         ShoppingCartModel shoppingCartModel = new Gson().fromJson(request.getReader(), ShoppingCartModel.class);
-        shoppingCartModel.setProduct(service.getProduct(shoppingCartModel.getProductId()));
 
         int pastQuantity = getPastQuantity(shoppingCartModel);
 
@@ -45,20 +44,20 @@ public class ShoppingCartController extends MainController {
                     service.add(shoppingCartModel);
                 } else {
                     shoppingCartModel.setQuantity(pastQuantity + shoppingCartModel.getQuantity());
-                    service.updateShoppingCart(shoppingCartModel);
+                    service.update(shoppingCartModel);
                 }
                 break;
-            case "add":
+            case "add to user":
                 if (pastQuantity == 0) {
                     service.add(shoppingCartModel);
                 } else {
                     shoppingCartModel.setQuantity(pastQuantity + shoppingCartModel.getQuantity());
-                    service.updateShoppingCart(shoppingCartModel);
+                    service.update(shoppingCartModel);
                 }
                 break;
             case "decrease":
                 shoppingCartModel.setQuantity(pastQuantity - shoppingCartModel.getQuantity());
-                service.updateShoppingCart(shoppingCartModel);
+                service.update(shoppingCartModel);
                 break;
             case "remove":
                 service.deleteShoppingCart(shoppingCartModel.getId());
@@ -84,7 +83,7 @@ public class ShoppingCartController extends MainController {
     private int getPastQuantity(ShoppingCartModel shoppingCartModel) {
         int pastQuantity;
         try {
-            pastQuantity = service.getShoppingCartBy(shoppingCartModel.getCustomerId(), shoppingCartModel.getProduct().getId()).getQuantity();
+            pastQuantity = service.getShoppingCartBy(shoppingCartModel.getCustomerId(), shoppingCartModel.getProductId()).getQuantity();
         } catch (Exception e) {
             pastQuantity = 0;
         }

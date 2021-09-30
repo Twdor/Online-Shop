@@ -2,6 +2,7 @@ package com.codecool.shop.controllers;
 
 import com.codecool.shop.service.Service;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.google.gson.JsonParser;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -11,7 +12,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -23,7 +26,16 @@ public class MainController extends HttpServlet {
     public MainController() throws SQLException {}
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {}
+    protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        Object countryAndStates = new JsonParser().parse(new FileReader("country-states.json"));
+
+        PrintWriter out = response.getWriter();
+        out.println(countryAndStates);
+        out.flush();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,15 +44,14 @@ public class MainController extends HttpServlet {
 
         var userIdCookie = readServletCookie(req, "userId");
         var guestIdCookie = readServletCookie(req, "guestId");
-        //            int guestId = Integer.parseInt(guestIdCookie.get());
         if (userIdCookie != null) {
-//            int customerId = Integer.parseInt(userIdCookie.get());
             context.setVariable("customerData", service.getUser(Integer.parseInt(userIdCookie)));
-            context.setVariable("shoppingCart", service.getCustomerShoppingCart(userIdCookie));
+            context.setVariable("shoppingCartSize", service.getShoppingCartSize(userIdCookie));
         } else if (guestIdCookie != null) {
-            context.setVariable("shoppingCart", service.getCustomerShoppingCart(guestIdCookie));
+            context.setVariable("shoppingCartSize", service.getShoppingCartSize(guestIdCookie));
             context.setVariable("guestId", guestIdCookie);
         }
+
 
         context.setVariable("categories", service.getAllCategories());
 
