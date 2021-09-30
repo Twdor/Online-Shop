@@ -1,9 +1,9 @@
 package com.codecool.shop.config;
 
-import com.codecool.shop.model.ProductModel;
-import com.codecool.shop.model.ProductCategoryModel;
-import com.codecool.shop.model.ProductSubcategoryModel;
-import com.codecool.shop.model.SupplierModel;
+import com.codecool.shop.models.ProductModel;
+import com.codecool.shop.models.ProductCategoryModel;
+import com.codecool.shop.models.ProductSubcategoryModel;
+import com.codecool.shop.models.SupplierModel;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

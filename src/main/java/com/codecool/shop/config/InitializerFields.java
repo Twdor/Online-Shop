@@ -1,8 +1,8 @@
 package com.codecool.shop.config;
 
-import com.codecool.shop.model.ProductCategoryModel;
-import com.codecool.shop.model.ProductSubcategoryModel;
-import com.codecool.shop.model.SupplierModel;
+import com.codecool.shop.models.ProductCategoryModel;
+import com.codecool.shop.models.ProductSubcategoryModel;
+import com.codecool.shop.models.SupplierModel;
 import com.codecool.shop.service.Service;
 
 import java.sql.SQLException;

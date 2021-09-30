@@ -35,7 +35,14 @@ public class ProductCategoryModel extends BaseModel{
 
     @Override
     public String toString() {
-        return String.format("{\"id\": %1$d,\"name\": \"%2$s\",\"department\": \"%3$s\",\"description\":\"%4$s\"}",
-                this.id, this.name, this.department, this.description);
+        return String.format("" +
+                        "{\"id\": %1$d," +
+                        "\"name\": \"%2$s\"," +
+                        "\"department\": \"%3$s\"," +
+                        "\"description\":\"%4$s\"}",
+                this.id,
+                this.name,
+                this.department,
+                this.description);
     }
 }

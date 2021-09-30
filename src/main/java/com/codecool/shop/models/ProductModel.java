@@ -34,7 +34,7 @@ public class ProductModel extends BaseModel {
         this.defaultCurrency = defaultCurrency;
     }
 
-    public String getPrice() { return this.defaultCurrency.toString() + this.defaultPrice; }
+    public String getPrice() { return this.defaultCurrency.toString() + ' ' + this.defaultPrice; }
 
     public void setPrice(BigDecimal price, String currency) {
         this.defaultPrice = price;
@@ -61,20 +61,20 @@ public class ProductModel extends BaseModel {
 
     @Override
     public String toString() {
-        return String.format("{\"id\": %1$d,\"name\": \"%2$s\",\"defaultPrice\": %3$f,\"price\":\"%4$s\",\"subcategory\":\"%5$s\",\"supplier\":\"%6$s\",\"description\":\"%7$s\"}",
-                this.id, this.name, this.defaultPrice, this.getPrice(), this.productSubcategory.getName(), this.supplier.getName(), this.description);
-
-//        return String.format("id: %1$d, " +
-//                        "name: %2$s, " +
-//                        "defaultPrice: %3$f, " +
-//                        "defaultCurrency: %4$s, " +
-//                        "productCategory: %5$s, " +
-//                        "supplier: %6$s",
-//                this.id,
-//                this.name,
-//                this.defaultPrice,
-//                this.defaultCurrency.toString(),
-//                this.productSubcategory.getName(),
-//                this.supplier.getName());
+        return String.format("" +
+                        "{\"id\": %1$d," +
+                        "\"name\": \"%2$s\"," +
+                        "\"defaultPrice\": %3$f," +
+                        "\"price\":\"%4$s\"," +
+                        "\"subcategory\":\"%5$s\"," +
+                        "\"supplier\":\"%6$s\"," +
+                        "\"description\":\"%7$s\"}",
+                this.id,
+                this.name,
+                this.defaultPrice,
+                this.getPrice(),
+                this.productSubcategory.getName(),
+                this.supplier.getName(),
+                this.description);
     }
 }

@@ -5,6 +5,7 @@ public class UserModel extends BaseModel{
     private String password;
     private String phoneNumber;
     private String country;
+    private String state;
     private String city;
     private String zipcode;
     private String address;
@@ -12,12 +13,6 @@ public class UserModel extends BaseModel{
     public UserModel(String name, String email, String password) {
         super(name);
         this.name = name;
-        this.email = email;
-        this.password = password;
-    }
-
-    public UserModel(String email, String password) {
-        super("tempCustomer");
         this.email = email;
         this.password = password;
     }
@@ -78,9 +73,30 @@ public class UserModel extends BaseModel{
         this.address = address;
     }
 
+    public String getState() { return state; }
+
+    public void setState(String state) { this.state = state; }
+
     @Override
     public String toString() {
-        return String.format("{\"id\": %1$d,\"name\": \"%2$s\",\"email\": \"%3$s\",\"phoneNumber\":\"%4$s\",\"country\":\"%5$s\",\"city\":\"%6$s\",\"zipcode\":\"%7$s\",\"address\":\"%8$s\"}",
-                this.id, this.name, this.email, this.phoneNumber, this.country, this.city, this.zipcode, this.address);
+        return String.format("" +
+                        "{\"id\": %1$d," +
+                        "\"name\": \"%2$s\"," +
+                        "\"email\": \"%3$s\"," +
+                        "\"phoneNumber\":\"%4$s\"," +
+                        "\"country\":\"%5$s\"," +
+                        "\"city\":\"%6$s\"," +
+                        "\"zipcode\":\"%7$s\"," +
+                        "\"address\":\"%8$s\"," +
+                        "\"state\":\"%9$s\"}",
+                this.id,
+                this.name,
+                this.email,
+                this.phoneNumber,
+                this.country,
+                this.city,
+                this.zipcode,
+                this.address,
+                this.state);
     }
 }

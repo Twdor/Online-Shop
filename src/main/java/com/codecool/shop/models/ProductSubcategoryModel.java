@@ -32,7 +32,16 @@ public class ProductSubcategoryModel extends BaseModel {
 
     @Override
     public String toString() {
-        return String.format("{\"id\": %1$d,\"name\": \"%2$s\",\"category\": \"%3$s\",\"description\":\"%4$s\",\"productsNumber\": %5$d}",
-                this.id, this.name, this.productCategory.getName(), this.description, this.products.size());
+        return String.format("" +
+                        "{\"id\": %1$d," +
+                        "\"name\": \"%2$s\"," +
+                        "\"category\": \"%3$s\"," +
+                        "\"description\":\"%4$s\"," +
+                        "\"productsNumber\": %5$d}",
+                this.id,
+                this.name,
+                this.productCategory.getName(),
+                this.description,
+                this.products.size());
     }
 }
