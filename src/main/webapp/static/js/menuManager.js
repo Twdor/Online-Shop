@@ -29,6 +29,8 @@ export const menuManager = {
                             let subcategoryId = event.currentTarget.dataset.subcategoryId;
                             const products = await dataHandler.getProducts(subcategoryId);
                             const productsContent = htmlFactory(htmlTemplates.products)(products);
+
+                            document.getElementById("subcategoryMainTitle").textContent = event.target.dataset.subcategoryTitle;
                             domManager.deleteChild("#productsParent");
                             domManager.addChild("#productsParent", productsContent);
                         }
@@ -56,8 +58,9 @@ export const menuManager = {
     },
     checkIfUserIsLoggedIn: async ()=> {
         let customer = document.getElementById("customer");
-        let customerId = customer.dataset.customer;
-        let isUser = customer.dataset.isUser;
-        await loadCustomerData(customerId, isUser);
+        let customerId = customer.dataset.customerId;
+        let userCountry = customer.dataset.userCountry;
+        let userState = customer.dataset.userState;
+        await loadCustomerData(customerId, userCountry, userState);
     },
 }

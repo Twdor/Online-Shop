@@ -1,6 +1,8 @@
 import { htmlFactory, htmlTemplates } from "./htmlFactory.js";
 import { dataHandler } from "./dataHandler.js";
 import { domManager } from "./domManager.js";
+import { addCountryAndStateEvent, allCountries, allStates } from "./countryAndStatesManager.js";
+import { sandBoxManager } from "./sandBoxManager.js";
 
 export const customerManager= {
     manageLoginsEvents: async () => {
@@ -41,18 +43,54 @@ export const customerManager= {
                 location.reload();
             }
         })
+        domManager.addEventListener("#form-savedBillingInfo", "submit", async (event) => {
+            event.preventDefault();
+
+            let states = allStates[event.target.country.value];
+            let state = states.map(s => {return s.code === event.target.state.value ? s.name : ''}).join('');
+
+            let status = await dataHandler.updateUserInfo(
+                event.currentTarget.dataset.userId,
+                event.target.fullName.value,
+                event.target.email.value,
+                event.target.phoneNumber.value,
+                allCountries[event.target.country.value],
+                state,
+                event.target.city.value,
+                event.target.zip.value,
+                event.target.address.value
+            )
+            if (status) {
+                location.reload();
+            }
+        })
     },
     signOutCustomerEvent: ()=> {
         domManager.addEventListener("#signIn", "click", () => {
             document.cookie = "userId=; expires=Thu, 01 Jan 1977 00:00:00 UTC; path=/;";
             location.reload();
         })
-    }
+    },
 }
-export const loadCustomerData=async(customerId, isUser)=> {
+
+export const loadCustomerData=async(customerId, userCountry, userState)=> {
+    let isUser = userCountry !== 'false';
+
     addProductEvents(customerId, isUser);
-    await loadUserShoppingCart(customerId);
-    if (isUser === 'true') {
+    addCountryAndStateEvent(userCountry, userState);
+
+    await loadUserShoppingCart(customerId, isUser);
+    if (isUser) {
+        domManager.addEventListener("#orderHistoryBtn", "click", async (event) => {
+            event.preventDefault();
+            const orders = await dataHandler.getUserOrders(customerId);
+            domManager.deleteChild("#orderHistory");
+            if (orders.length !== 0) {
+                domManager.addChild("#orderHistory", htmlFactory(htmlTemplates.orderHistory)(orders));
+            } else {
+                domManager.addChild("#orderHistory", `<h4 >You have no orders.</h4>`)
+            }
+        })
         customerManager.signOutCustomerEvent();
     }
 }
@@ -64,15 +102,15 @@ const addProductEvents=(customerId, isUser)=> {
         btn.addEventListener("click", async (event) => {
             event.preventDefault();
             let productId = event.currentTarget.dataset.productId;
-            let status = isUser === 'true' ? await dataHandler.addProductToShoppingCart(customerId, productId) : await dataHandler.addGuestProductToShoppingCart(productId);
+            let status = isUser ? await dataHandler.addProductToShoppingCart(customerId, productId) : await dataHandler.addGuestProductToShoppingCart(productId);
             if (status) {
-                return loadUserShoppingCart(customerId);
+                return loadUserShoppingCart(customerId, isUser);
             }
         })
     }
 }
 
-const removeProductEvents=(customerId)=> {
+const removeProductEvents=(customerId, isUser)=> {
     const removeCartButtons = document.querySelectorAll("#cardRemoval");
 
     for (let btn of removeCartButtons) {
@@ -81,13 +119,13 @@ const removeProductEvents=(customerId)=> {
             let cartId = event.currentTarget.dataset.cartId;
             let status = await dataHandler.removeShoppingCart(cartId);
             if (status){
-                return loadUserShoppingCart(customerId);
+                return loadUserShoppingCart(customerId, isUser);
             }
         })
     }
 }
 
-const loadUserShoppingCart= async (customerId)=> {
+const loadUserShoppingCart= async (customerId, isUser)=> {
     const customerCart = await dataHandler.getCustomerShoppingCart(customerId);
     const shoppingCartQuantityLabel = document.getElementById("shoppingCartQuantity");
     document.getElementById("navbarPillCartQuantity").textContent = customerCart.length;
@@ -101,12 +139,24 @@ const loadUserShoppingCart= async (customerId)=> {
         document.getElementById("totalPriceContainer").hidden = false;
 
         let totalPrice = 0;
-        for (let cart of customerCart) {
-            totalPrice = Number(totalPrice + cart.defaultPrice * cart.quantity);
-        }
-        document.getElementById("totalPrice").textContent = customerCart[0].defaultCurrency + String(totalPrice);
+        customerCart.forEach((cart)=> totalPrice = Number(totalPrice + cart.productDefaultPrice * cart.quantity));
+
+        document.getElementById("totalPrice").textContent = customerCart[0].productDefaultCurrency + ' ' + String(totalPrice);
         document.getElementById("checkoutBtn").hidden = false;
-        return removeProductEvents(customerId);
+
+        document.getElementById("checkoutInfoPill").textContent = customerCart.length;
+        domManager.deleteChild("#checkoutCartInfo");
+        domManager.addChild("#checkoutCartInfo", htmlFactory(htmlTemplates.checkoutCartInfo)(customerCart));
+
+        domManager.addEventListener("#checkoutBtn", "click", async ()=>{
+            document.getElementById("success").hidden = true;
+            document.getElementById("checkoutParent").hidden = false;
+            document.getElementById("closeCheckoutBtn").textContent = "Cancel";
+            domManager.deleteChild("#paypal-button-container");
+            await sandBoxManager.loadPaymentButtons(customerCart, totalPrice, customerId, isUser ? 'user' : 'guest');
+        })
+
+        return removeProductEvents(customerId, isUser);
     } else {
         domManager.addChild("#shoppingCart", `<h4 style="padding: 14rem 0 0 4rem">Your shopping cart is empty.</h4>`);
         document.getElementById("totalPriceContainer").hidden = true;

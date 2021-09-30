@@ -10,16 +10,32 @@ export const dataHandler = {
         return await apiGet(`/api/productSubcategory?id=${id}`);
     },
     signInCustomer: async (email, password)=> {
-        return await apiPost("/api/customer-signIn",{"email": `${email}`, "password": `${password}`});
+        return await apiPost("/api/user-signIn",{"email": `${email}`, "password": `${password}`});
     },
     signUpCustomer: async (name, email, password)=> {
-        return await apiPost("/api/customer-signUp", {"name": `${name}`, "email": `${email}`, "password": `${password}`});
+        return await apiPost("/api/user-signUp", {"name": `${name}`, "email": `${email}`, "password": `${password}`});
     },
-    getUserData: async (customerId)=> {
-        return await apiGet(`/api/customer-signIn?id=${customerId}`);
+    getUserData: async (userId)=> {
+        return await apiGet(`/api/user?id=${userId}`);
+    },
+    updateUserInfo: async function (id, name, email, phoneNumber, country, state, city, zipcode, address) {
+        let request = await apiPost("/api/user",{
+            "id": `${id}`,
+            "name": `${name}`,
+            "email": `${email}`,
+            "phoneNumber": `${phoneNumber}`,
+            "country": `${country}`,
+            "state": `${state}`,
+            "city": `${city}`,
+            "zipcode": `${zipcode}`,
+            "address": `${address}`});
+        if (request) {
+            return request;
+        }
+        return false;
     },
     addProductToShoppingCart: async function (customerId, productId) {
-        let request = await apiPost("/api/shoppingCart",{"customerId": `${customerId}`, "productId": `${productId}`, "quantity": "1", "option": "add"});
+        let request = await apiPost("/api/shoppingCart",{"customerId": `${customerId}`, "productId": `${productId}`, "quantity": "1", "option": "add to user"});
         if (request) {
             return request;
         }
@@ -38,6 +54,27 @@ export const dataHandler = {
             return request;
         }
         return false;
+    },
+    addOrder: async function (orderId, customerId, customerType, orderDate, orderStatus, totalPrice) {
+        let request = await apiPost("/api/order",
+            {
+                "orderId": `${orderId}`,
+                "customerId": `${customerId}`,
+                "customerType": `${customerType}`,
+                "orderDate": `${orderDate}`,
+                "orderStatus": `${orderStatus}`,
+                "totalPrice": `${totalPrice}`
+            });
+        if (request) {
+            return request;
+        }
+        return false;
+    },
+    getUserOrders: async (userId)=> {
+        return await apiGet(`/api/order?userId=${userId}`);
+    },
+    getCountryAndStates: async ()=> {
+        return await apiOptions("/");
     },
 };
 
@@ -65,4 +102,16 @@ async function apiPost(url, payload) {
     }
 }
 
+const apiOptions= async(url)=>{
+    const response = await fetch(url, {
+        method: 'OPTIONS',
+        headers: {'Content-Type': 'application/json'}
+    });
+    if (response.ok) {
+        return response.json();
+    } else {
+        alert("There was a problem! Please Try again later");
+        console.log("No response!");
+    }
+}
 
