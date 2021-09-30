@@ -2,7 +2,7 @@ package com.codecool.shop.dao.implementation.jdbc;
 
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.ShoppingCartDao;
-import com.codecool.shop.model.ShoppingCartModel;
+import com.codecool.shop.models.ShoppingCartModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -31,7 +31,7 @@ public class ShoppingCartDaoJdbc extends DbManager implements ShoppingCartDao {
             String sql = "INSERT INTO shopping_cards (customer_id, product_id, quantity) VALUES (?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, shoppingCartModel.getCustomerId());
-            statement.setInt(2, shoppingCartModel.getProduct().getId());
+            statement.setInt(2, shoppingCartModel.getProductId());
             statement.setInt(3, shoppingCartModel.getQuantity());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
@@ -61,7 +61,7 @@ public class ShoppingCartDaoJdbc extends DbManager implements ShoppingCartDao {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, shoppingCartModel.getQuantity());
             st.setString(2, shoppingCartModel.getCustomerId());
-            st.setInt(3, shoppingCartModel.getProduct().getId());
+            st.setInt(3, shoppingCartModel.getProductId());
             st.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -95,7 +95,7 @@ public class ShoppingCartDaoJdbc extends DbManager implements ShoppingCartDao {
             List<ShoppingCartModel> shoppingCartModels = new ArrayList<>();
             while (rs.next()) {
                 ShoppingCartModel shoppingCartModel = new ShoppingCartModel(
-                        productDao.find(rs.getInt(3)),
+                        rs.getInt(3),
                         customerId,
                         rs.getInt(4));
                 shoppingCartModel.setId(rs.getInt(1));

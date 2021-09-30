@@ -1,7 +1,7 @@
 package com.codecool.shop.dao.implementation.jdbc;
 
 import com.codecool.shop.dao.UserDao;
-import com.codecool.shop.model.UserModel;
+import com.codecool.shop.models.UserModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -47,7 +47,22 @@ public class UserDaoJdbc extends DbManager implements UserDao {
 
     @Override
     public void update(UserModel userModel) {
-
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "UPDATE users SET name = ?, email = ?, phone_number = ?, country = ?, state = ?, city = ?, zipcode = ?, address = ? WHERE id = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, userModel.getName());
+            st.setString(2, userModel.getEmail());
+            st.setString(3, userModel.getPhoneNumber());
+            st.setString(4, userModel.getCountry());
+            st.setString(5, userModel.getState());
+            st.setString(6, userModel.getCity());
+            st.setString(7, userModel.getZipcode());
+            st.setString(8, userModel.getAddress());
+            st.setInt(9, userModel.getId());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

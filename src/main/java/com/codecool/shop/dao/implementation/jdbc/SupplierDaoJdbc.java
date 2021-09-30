@@ -1,10 +1,9 @@
 package com.codecool.shop.dao.implementation.jdbc;
 
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.model.SupplierModel;
+import com.codecool.shop.models.SupplierModel;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

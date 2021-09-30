@@ -3,9 +3,9 @@ package com.codecool.shop.dao.implementation.jdbc;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.ProductSubcategoryDao;
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.model.ProductModel;
-import com.codecool.shop.model.ProductSubcategoryModel;
-import com.codecool.shop.model.SupplierModel;
+import com.codecool.shop.models.ProductModel;
+import com.codecool.shop.models.ProductSubcategoryModel;
+import com.codecool.shop.models.SupplierModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
