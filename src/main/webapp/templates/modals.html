@@ -4,7 +4,7 @@
 
 <!-- Category Modal -->
 <div th:fragment="copy" class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog float-start d-flex">
+    <div style="margin-left: 50%" class="modal-dialog d-flex">
         <div style="min-width: 30rem;" class="modal-dialog modal-dialog-scrollable">
             <div style="height: 84vh; margin-top: 5.7rem" class="modal-content">
                 <div class="modal-header">
@@ -118,7 +118,7 @@
 </div>
 
 <!-- Shopping Cart Modal -->
-<div th:fragment="copy" class="modal opacity-75" id="shoppingCartModal" tabindex="-1" aria-labelledby="shoppingCartModalLabel" aria-hidden="true">
+<div th:fragment="copy" class="modal fade" id="shoppingCartModal" tabindex="-1" aria-labelledby="shoppingCartModalLabel" aria-hidden="true">
     <div class="modal-dialog float-end d-flex">
         <div style="min-width: 30rem;" class="modal-dialog modal-dialog-scrollable">
             <div style="height: 84vh; margin-top: 5.7rem" class="modal-content">
@@ -127,19 +127,145 @@
                     <a type="button" class="btn btn-light float-end transparent" data-bs-dismiss="modal">&maltese;</a>
                 </div>
                 <div id="shoppingCart" class="modal-body">
-                    <ul th:replace="shopping-cart-content.html :: ${shoppingCart ? 'shoppingCartCopy' : 'emptyCart'}"></ul>
                 </div>
-                <div id="totalPriceContainer" th:hidden="${shoppingCart ? 'false' : 'true'}">
+                <div id="totalPriceContainer" hidden>
                     <strong style="float: left; padding-left: 10px" class="text-muted">Subtotal</strong>
                     <strong id="totalPrice" style="float: right; padding-right: 10px" class="text-muted">$89.00</strong>
                 </div>
                 <div class="d-flex row align-items-center">
-                    <a id="checkoutBtn" style="border-color: lightslategray" class="btn btn-outline-success" href="/" th:hidden="${shoppingCart ? 'false' : 'true'}">Continue to Checkout</a>
+                    <hr class="my-4">
+                    <a style="border-color: transparent" id="checkoutBtn" class="btn btn-outline-success" href="#" th:attr="data-customer-id=${customerData ? customerData.id : guestId}" data-bs-target="#checkoutModal" data-bs-toggle="modal" data-bs-dismiss="modal" hidden>Continue to Checkout</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Billing Address Modal -->
+<div th:fragment="copy" class="modal fade" id="billingAddressModal" tabindex="-1" aria-labelledby="billingAddressModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header line-height-fixed font-size-lg">
+                <h5 class="modal-title" th:text="${customerData && customerData.address != null ? 'Update Billing Info' : 'Add Billing Info'}"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-savedBillingInfo" class="was-validated" th:attr="data-user-id=${customerData ? customerData.getId() : ''}">
+                    <div style="padding-bottom: 3rem" class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="fullName" class="form-label">Full name</label>
+                            <input type="tel" name="fullName" class="form-control" id="fullName" placeholder="" th:value="${customerData ? customerData.name : ''}" value="" required="">
+                            <div class="invalid-feedback">
+                                Valid full name is required.
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="phoneNumber" class="form-label">Phone number</label>
+                            <input type="tel" name="phoneNumber" class="form-control" id="phoneNumber" th:value="${customerData && customerData.phoneNumber != null ? customerData.phoneNumber : ''}" value="" required="">
+                            <div class="invalid-feedback">
+                                Valid phone number is required.
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="email" class="form-label">Email</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text">@</span>
+                                <input type="email" name="email" class="form-control" id="email" th:value="${customerData ? customerData.email : ''}" required="">
+                                <div class="invalid-feedback">
+                                    Your email address is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" name="address" class="form-control" id="address" th:value="${customerData && customerData.address != null ? customerData.address : ''}" required="">
+                            <div class="invalid-feedback">
+                                Please enter your shipping address.
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="country" class="form-label">Country</label>
+                            <select id="country" class="form-select" required="">
+                                <option name="country" th:value="${customerData && customerData.country != null ? customerData.country : ''}" th:text="${customerData && customerData.country != null ? customerData.country : ''}">Choose...</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a valid country.
+                            </div>
+                        </div>
+                        <div id="stateSelectParent" class="col-md-4">
+                            <label for="state" class="form-label">State</label>
+                            <input type="text" name="state" id="state" class="form-control" th:value="${customerData && customerData.state != null ? customerData.state : ''}" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="zip" class="form-label">Zip</label>
+                            <input type="text" name="zip" class="form-control" id="zip" th:value="${customerData && customerData.zipcode != null ? customerData.zipcode : ''}" required="">
+                            <div class="invalid-feedback">
+                                Zip code required.
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" name="city" class="form-control" id="city" th:value="${customerData && customerData.city != null ? customerData.city : ''}" required="">
+                            <div class="invalid-feedback">
+                                Please select a valid city.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-outline-dark" data-bs-dismiss="">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- History Modal -->
+<div th:fragment="copy" class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="historyModalLabel">Order History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="orderHistory" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Checkout Modal-->
+<div th:fragment="copy" class="modal fade" id="checkoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div style="margin-left: 10rem; padding: 5rem; font-size: 5rem" id="success" class="text-success">Success!</div>
+                <div id="checkoutParent" class="row g-5">
+                    <div class="col-md-5 col-md-6 order-md-last">
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-dark">Your cart</span>
+                            <span id="checkoutInfoPill" class="badge bg-dark rounded-pill" th:text="${shoppingCartSize}">3</span>
+                        </h4>
+                        <ul id="checkoutCartInfo" class="list-group mb-3">
+                        </ul>
+                    </div>
+                    <div class="col-md-5 col-lg-6">
+                        <div style="padding-top: 2rem" id="paypal-button-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeCheckoutBtn" type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
