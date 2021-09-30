@@ -38,6 +38,7 @@ CREATE TABLE public.users (
     password CHARACTER VARYING(255) NOT NULL,
     phone_number text,
     country text,
+    state text,
     city text,
     zipcode text,
     address text
@@ -45,11 +46,13 @@ CREATE TABLE public.users (
 
 DROP TABLE IF EXISTS public.orders;
 CREATE TABLE public.orders (
-    id serial NOT NULL PRIMARY KEY,
-    date date NOT NULL,
-    status text NOT NULL,
-    customer_id integer NOT NULL,
-    product_id integer NOT NULL
+    id text NOT NULL,
+    customer_id CHARACTER VARYING(255) NOT NULL,
+    customer_type text NOT NULL,
+    order_date text NOT NULL,
+    order_status text NOT NULL,
+    total_price text NOT NULL,
+    product_list text NOT NULL
 );
 
 DROP TABLE IF EXISTS public.shopping_cards;
