@@ -12,19 +12,29 @@
 
     <nav class="navbar navbar-light">
       <div class="container-fluid d-flex">
-        <button style="border-color: transparent; text-indent: 10px;" class="btn btn-outline-dark font-monospace fs-3" type="button" data-bs-toggle="modal" data-bs-target="#categoryModal">
-            <span class="navbar-toggler-icon"></span>
-            <span style="float: left">Menu</span>
+        <button style="border-color: transparent; text-indent: 10px; margin-left: 50%" class="btn btn-outline-dark font-monospace fs-3" type="button" data-bs-toggle="modal" data-bs-target="#categoryModal">
+        <span class="navbar-toggler-icon"></span>
+        <span style="float: left">Menu</span>
         </button>
-        <div id="customer" th:attr="data-customer=${customerData ? customerData.id : guestId}" th:attrappend="data-is-user=${customerData ? true : false}" class="btn-group" role="group">
-            <button id="username" style="border-color: transparent; color: whitesmoke" type="button" class="btn btn-outline-light" th:text="${customerData ? customerData.name : ''}" disabled></button>
+        <div id="customer"
+             th:attr="data-customer-id=${customerData ? customerData.id : guestId}"
+             th:attrprepend="data-user-country=${customerData ? customerData.getCountry() : false}"
+             th:attrappend="data-user-state=${customerData ? customerData.getState() : false}"
+             class="btn-group" role="group">
+            <button style="border-color: transparent;" type="button" class="btn btn-outline-light" disabled></button>
+            <button style="border-color: transparent;" id="orderHistoryBtn" type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#historyModal" th:hidden="${customerData ? false : true}">Order History</button>
+            <button style="border-color: transparent;" type="button" class="btn btn-outline-light" disabled></button>
+            <button id="username" style="border-color: transparent; color: whitesmoke" class="btn btn-outline-dark transparent" th:text="${customerData ? customerData.name : ''}" disabled></button>
+            <button style="border-color: transparent;" type="button" class="btn btn-outline-light" disabled></button>
+            <button style="border-color: transparent;" id="billingInfo" type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#billingAddressModal" th:text="${customerData && customerData.address != null ? 'Update Billing info' : 'Add Billing info'}" th:hidden="${customerData ? false : true}"></button>
+            <button style="border-color: transparent;" type="button" class="btn btn-outline-light" disabled></button>
             <button id="signIn" style="border-color: transparent;" class="btn btn-outline-info font-monospace" type="button" th:attr="data-bs-toggle=${customerData ? '' : 'modal'}" th:attrappend="data-bs-target=${customerData ? '' : '#loginModal'}" th:text="${customerData ? 'Sign out' : 'Sign in'}"></button>
             <button style="border-color: transparent;" type="button" class="btn btn-outline-light" disabled></button>
             <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#shoppingCartModal">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
                 <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path>
               </svg>
-              <span id="navbarPillCartQuantity" class="badge bg-light text-dark rounded-pill align-text-bottom" th:text="${shoppingCart ? shoppingCart.size() : '0'}">0</span>
+              <span id="navbarPillCartQuantity" class="badge bg-light text-dark rounded-pill align-text-bottom" th:text="${shoppingCartSize}">0</span>
             </button>
         </div>
       </div>
