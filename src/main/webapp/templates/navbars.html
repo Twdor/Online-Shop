@@ -18,8 +18,8 @@
         </button>
         <div id="customer"
              th:attr="data-customer-id=${customerData ? customerData.id : guestId}"
-             th:attrprepend="data-user-country=${customerData ? customerData.getCountry() : false}"
-             th:attrappend="data-user-state=${customerData ? customerData.getState() : false}"
+             th:attrprepend="data-user-country=${customerData ? customerData.country : false}"
+             th:attrappend="data-state=${customerData ? customerData.state : false}"
              class="btn-group" role="group">
             <button style="border-color: transparent;" type="button" class="btn btn-outline-light" disabled></button>
             <button style="border-color: transparent;" id="orderHistoryBtn" type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#historyModal" th:hidden="${customerData ? false : true}">Order History</button>

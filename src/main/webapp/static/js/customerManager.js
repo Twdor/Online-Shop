@@ -48,7 +48,6 @@ export const customerManager= {
 
             let states = allStates[event.target.country.value];
             let state = states.map(s => {return s.code === event.target.state.value ? s.name : ''}).join('');
-
             let status = await dataHandler.updateUserInfo(
                 event.currentTarget.dataset.userId,
                 event.target.fullName.value,

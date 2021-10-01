@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/"})
 public class MainController extends HttpServlet {
-    Service service = new Service(true);
+    Service service = new Service();
 
     public MainController() throws SQLException {}
 

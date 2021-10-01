@@ -79,9 +79,10 @@ public class UserDaoJdbc extends DbManager implements UserDao {
             userModel.setId(rs.getInt(1));
             userModel.setPhoneNumber(rs.getString(5));
             userModel.setCountry(rs.getString(6));
-            userModel.setCity(rs.getString(7));
-            userModel.setZipcode(rs.getString(8));
-            userModel.setAddress(rs.getString(9));
+            userModel.setState(rs.getString(7));
+            userModel.setCity(rs.getString(8));
+            userModel.setZipcode(rs.getString(9));
+            userModel.setAddress(rs.getString(10));
 
             return userModel;
 

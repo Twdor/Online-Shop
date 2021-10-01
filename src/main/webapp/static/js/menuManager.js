@@ -60,7 +60,7 @@ export const menuManager = {
         let customer = document.getElementById("customer");
         let customerId = customer.dataset.customerId;
         let userCountry = customer.dataset.userCountry;
-        let userState = customer.dataset.userState;
+        let userState = customer.dataset.state;
         await loadCustomerData(customerId, userCountry, userState);
     },
 }

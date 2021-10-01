@@ -50,7 +50,6 @@ const manageCountryAndStates=async (userCountry, userState)=> {
     }
     const countrySelect = document.getElementById("country");
     countrySelect.addEventListener('change', create_states_dropdown);
-
     create_states_dropdown(userState);
 }
 
