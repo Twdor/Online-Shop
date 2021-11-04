@@ -8,7 +8,8 @@ import com.codecool.shop.service.Service;
 import java.sql.SQLException;
 
 public class InitializerFields {
-    Service productService = new Service();
+    // true for db persistence , for memory no param
+    Service productService = new Service(true);
 
     //Suppliers
     SupplierModel amazon;

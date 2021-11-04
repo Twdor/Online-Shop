@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/"})
 public class MainController extends HttpServlet {
-    Service service = new Service();
+    // true for db persistence , for memory no param
+    Service service = new Service(true);
 
     public MainController() throws SQLException {}
 
