@@ -4,7 +4,7 @@
 
 * This is an online shop where you can buy all kinds of products, from TVs to beauty products and more.
 * In the menu you can sort products by category or suppliers.
-* You can make payments with paypal or credit card.
+* You can make payments as quest or as a registered user with paypal or credit card.
 * Data persistence can be done very easily both in the database and in memory.
 
 ## Technologies used
