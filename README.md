@@ -27,7 +27,7 @@ Login:
 Menu:
 ![Menu](./src/main/resources/menu.png)
 
-Shoping cart:
+Shopping cart:
 ![Shooping cart](./src/main/resources/cart.png)
 
 Payment:
